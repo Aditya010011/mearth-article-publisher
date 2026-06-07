@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: mearth-article-publisher
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: cd mearth-article-publisher && npm install
+    startCommand: cd mearth-article-publisher && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    disk:
+      name: mearth-data
+      mountPath: /opt/render/project/src/mearth-article-publisher/uploads
+      sizeGB: 1
