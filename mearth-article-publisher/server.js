@@ -444,12 +444,12 @@ app.get('/api/articles', (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════════════╗
 ║                                                               ║
 ║   Mearth Article Publisher - Phase 1 MVP                     ║
-║   Server running at: http://localhost:${PORT}                    ║
+║   Server running at: http://0.0.0.0:${PORT}                    ║
 ║                                                               ║
 ║   Ready to publish articles!                                  ║
 ║                                                               ║
