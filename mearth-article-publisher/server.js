@@ -106,6 +106,16 @@ function createExcerpt(text, length = config.defaults.excerpt_length) {
 
 // Routes
 
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'Mearth Article Publisher is running',
+    timestamp: new Date().toISOString(),
+    port: PORT
+  });
+});
+
 // Home - Article upload interface
 app.get('/', (req, res) => {
   res.render('admin', {
@@ -125,14 +135,20 @@ app.post('/parse', upload.fields([
   { name: 'pdf', maxCount: 1 },
   { name: 'image', maxCount: 1 }
 ]), async (req, res) => {
+  console.log('Parse endpoint called');
+  console.log('Files received:', req.files);
+
   try {
     const docxFile = req.files['docx'] ? req.files['docx'][0] : null;
     const pdfFile = req.files['pdf'] ? req.files['pdf'][0] : null;
     const imageFile = req.files['image'] ? req.files['image'][0] : null;
 
     if (!docxFile) {
+      console.log('No docx file provided');
       return res.status(400).json({ error: 'Word document is required' });
     }
+
+    console.log('Processing docx file:', docxFile.path);
 
     // Parse Word document
     const docxResult = await mammoth.convertToHtml({ path: docxFile.path });
@@ -443,6 +459,25 @@ app.get('/api/articles', (req, res) => {
   }
 });
 
+// 404 handler - must be after all other routes
+app.use((req, res, next) => {
+  console.log('404 - Route not found:', req.method, req.path);
+  res.status(404).json({
+    error: 'Not Found',
+    path: req.path,
+    message: 'The requested endpoint does not exist'
+  });
+});
+
+// Error handler
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: err.message
+  });
+});
+
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`
@@ -455,4 +490,13 @@ app.listen(PORT, '0.0.0.0', () => {
 ║                                                               ║
 ╚═══════════════════════════════════════════════════════════════╝
   `);
+
+  // Log all registered routes
+  console.log('\nRegistered routes:');
+  app._router.stack.forEach((r) => {
+    if (r.route && r.route.path) {
+      const methods = Object.keys(r.route.methods).join(', ').toUpperCase();
+      console.log(`  ${methods} ${r.route.path}`);
+    }
+  });
 });
