@@ -1,0 +1,106 @@
+{
+  "categories": [
+    {
+      "id": "leadership-decision-making",
+      "name": "Leadership & Decision-Making",
+      "slug": "leadership-decision-making",
+      "definition": "Focuses on leadership thinking, strategic direction, decision frameworks, and how individuals or organizations choose paths forward under uncertainty. Includes executive thinking, long-range planning, and the psychology of leading complex initiatives.",
+      "sort_order": 1
+    },
+    {
+      "id": "innovation-systems-thinking",
+      "name": "Innovation & Systems Thinking",
+      "slug": "innovation-systems-thinking",
+      "definition": "Explores new ways of thinking, reframing challenges, systems design, and paradigm-shifting approaches that change how problems and opportunities are understood. Includes cross-disciplinary thinking, structural redesign, and new models.",
+      "sort_order": 2
+    },
+    {
+      "id": "mearth-framework",
+      "name": "Mearth Framework (Earth-Moon Construct)",
+      "slug": "mearth-framework",
+      "definition": "Covers the Earth-Moon ecosystem framework and its economic, societal, technological, and philosophical implications. Includes discussions of the Mearth construct and long-term interconnected system being built.",
+      "sort_order": 3
+    },
+    {
+      "id": "economy-finance-markets",
+      "name": "Economy, Finance & Markets",
+      "slug": "economy-finance-markets",
+      "definition": "Addresses economic systems, capital flows, market structures, investment models, financial innovation, and long-term value creation.",
+      "sort_order": 4
+    },
+    {
+      "id": "technology-engineering",
+      "name": "Technology & Engineering",
+      "slug": "technology-engineering",
+      "definition": "Focuses on engineering, technical systems, applied science, and the development or deployment of technologies.",
+      "sort_order": 5
+    },
+    {
+      "id": "robotics-automation",
+      "name": "Robotics & Automation",
+      "slug": "robotics-automation",
+      "definition": "Covers robotics systems, automation technologies, autonomous operations, and machine-assisted processes.",
+      "sort_order": 6
+    },
+    {
+      "id": "energy-power-systems",
+      "name": "Energy & Power Systems",
+      "slug": "energy-power-systems",
+      "definition": "Addresses generation, storage, transmission, and management of energy and power systems.",
+      "sort_order": 7
+    },
+    {
+      "id": "materials-mining-supply-chains",
+      "name": "Materials, Mining & Supply Chains",
+      "slug": "materials-mining-supply-chains",
+      "definition": "Covers materials science, mining systems, resource extraction, processing, logistics, and supply chain structures.",
+      "sort_order": 8
+    },
+    {
+      "id": "food-agriculture-biosystems",
+      "name": "Food, Agriculture & Bio-Systems",
+      "slug": "food-agriculture-biosystems",
+      "definition": "Focuses on food production, agricultural systems, biological cycles, and sustainable resource cultivation.",
+      "sort_order": 9
+    },
+    {
+      "id": "water-environment-resilience",
+      "name": "Water, Environment & Resilience",
+      "slug": "water-environment-resilience",
+      "definition": "Addresses water systems, environmental conditions, ecological resilience, and long-term sustainability of natural resources.",
+      "sort_order": 10
+    },
+    {
+      "id": "education-learning-systems",
+      "name": "Education & Learning Systems",
+      "slug": "education-learning-systems",
+      "definition": "Covers education models, learning frameworks, curriculum design, and knowledge transfer systems.",
+      "sort_order": 11
+    },
+    {
+      "id": "governance-law-standards",
+      "name": "Governance, Law & Standards",
+      "slug": "governance-law-standards",
+      "definition": "Addresses governance models, regulatory systems, legal frameworks, standards creation, and institutional coordination.",
+      "sort_order": 12
+    },
+    {
+      "id": "human-behavior-psychology",
+      "name": "Human Behavior & Psychology",
+      "slug": "human-behavior-psychology",
+      "definition": "Explores human thinking, behavior, motivation, perception, and decision psychology.",
+      "sort_order": 13
+    },
+    {
+      "id": "infrastructure-logistics",
+      "name": "Infrastructure & Logistics",
+      "slug": "infrastructure-logistics",
+      "definition": "Covers physical and operational infrastructure including transportation, construction, supply movement, and large-scale systems deployment.",
+      "sort_order": 14
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "updated": "2026-05-19"
+  }
+}

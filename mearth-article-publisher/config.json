@@ -1,0 +1,59 @@
+{
+  "site": {
+    "name": "Mearth",
+    "tagline": "Exploring the Earth-Moon Economic Ecosystem",
+    "url": "https://mearth.com",
+    "description": "A platform dedicated to understanding and building the interconnected Moon-Earth system through thought leadership, research, and systems thinking.",
+    "contact_email": "info@moonhut.org"
+  },
+  "paths": {
+    "base": "/discover",
+    "articles": "/discover/articles",
+    "articles_index": "/discover/articles-index",
+    "assets": "/assets",
+    "authors": "/authors"
+  },
+  "branding": {
+    "logo": "/assets/images/mearth-logo.png",
+    "favicon": "/assets/images/favicon.ico",
+    "primary_color": "#1a365d",
+    "secondary_color": "#2d3748",
+    "accent_color": "#3182ce"
+  },
+  "defaults": {
+    "author_id": "david-goldsmith",
+    "articles_per_page": 20,
+    "excerpt_length": 300,
+    "read_speed_wpm": 200
+  },
+  "seo": {
+    "meta_title_suffix": " | Mearth",
+    "default_og_image": "/assets/images/mearth-og-default.jpg",
+    "twitter_handle": "@projectmoonhut"
+  },
+  "features": {
+    "pdf_downloads": true,
+    "author_bios": true,
+    "additional_resources": true,
+    "related_articles": false,
+    "comments": false,
+    "analytics": false
+  },
+  "export": {
+    "zip_filename_prefix": "mearth-articles-export",
+    "include_sitemap": true,
+    "compress_images": false
+  },
+  "validation": {
+    "max_file_size_mb": 10,
+    "allowed_image_types": ["jpg", "jpeg", "png", "gif"],
+    "allowed_doc_types": ["pdf"],
+    "max_title_length": 200,
+    "max_description_length": 500
+  },
+  "metadata": {
+    "version": "1.0",
+    "environment": "development",
+    "updated": "2026-05-19"
+  }
+}

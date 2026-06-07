@@ -1,0 +1,84 @@
+{
+  "topics": [
+    {
+      "id": "supply-chain",
+      "name": "Supply Chain",
+      "slug": "supply-chain"
+    },
+    {
+      "id": "resilience",
+      "name": "Resilience",
+      "slug": "resilience"
+    },
+    {
+      "id": "logistics",
+      "name": "Logistics",
+      "slug": "logistics"
+    },
+    {
+      "id": "systems-thinking",
+      "name": "Systems Thinking",
+      "slug": "systems-thinking"
+    },
+    {
+      "id": "moon",
+      "name": "Moon",
+      "slug": "moon"
+    },
+    {
+      "id": "economy",
+      "name": "Economy",
+      "slug": "economy"
+    },
+    {
+      "id": "infrastructure",
+      "name": "Infrastructure",
+      "slug": "infrastructure"
+    },
+    {
+      "id": "mearth",
+      "name": "Mearth",
+      "slug": "mearth"
+    },
+    {
+      "id": "leadership",
+      "name": "Leadership",
+      "slug": "leadership"
+    },
+    {
+      "id": "strategy",
+      "name": "Strategy",
+      "slug": "strategy"
+    },
+    {
+      "id": "coordination",
+      "name": "Coordination",
+      "slug": "coordination"
+    },
+    {
+      "id": "decision-making",
+      "name": "Decision-Making",
+      "slug": "decision-making"
+    },
+    {
+      "id": "innovation",
+      "name": "Innovation",
+      "slug": "innovation"
+    },
+    {
+      "id": "technology",
+      "name": "Technology",
+      "slug": "technology"
+    },
+    {
+      "id": "sustainability",
+      "name": "Sustainability",
+      "slug": "sustainability"
+    }
+  ],
+  "metadata": {
+    "note": "This is a starter list of topics. More can be added through the admin interface or by editing this file.",
+    "version": "1.0",
+    "updated": "2026-05-19"
+  }
+}

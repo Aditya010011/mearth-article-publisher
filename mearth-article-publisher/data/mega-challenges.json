@@ -1,0 +1,45 @@
+{
+  "mega_challenges": [
+    {
+      "id": "climate-change",
+      "name": "Climate Change",
+      "slug": "climate-change",
+      "description": "Addressing the global challenge of climate change and its impacts on Earth and beyond"
+    },
+    {
+      "id": "mass-extinction",
+      "name": "Mass Extinction",
+      "slug": "mass-extinction",
+      "description": "Confronting the crisis of accelerating species loss and biodiversity collapse"
+    },
+    {
+      "id": "ecosystems-collapses",
+      "name": "Ecosystems Collapses",
+      "slug": "ecosystems-collapses",
+      "description": "Preventing and reversing the breakdown of critical ecological systems"
+    },
+    {
+      "id": "displacement",
+      "name": "Displacement",
+      "slug": "displacement",
+      "description": "Managing and mitigating forced migration due to environmental and social pressures"
+    },
+    {
+      "id": "unrest",
+      "name": "Unrest",
+      "slug": "unrest",
+      "description": "Addressing social, political, and economic instability and conflict"
+    },
+    {
+      "id": "explosive-impact",
+      "name": "Explosive Impact",
+      "slug": "explosive-impact",
+      "description": "Preparing for and responding to catastrophic events and system shocks"
+    }
+  ],
+  "metadata": {
+    "note": "These are six interconnected MegaChallenges that exist simultaneously and influence one another continuously. No numerical order or ranking implied.",
+    "version": "1.0",
+    "updated": "2026-05-19"
+  }
+}

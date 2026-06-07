@@ -1,0 +1,114 @@
+<div class="mt-8 pt-8 border-t border-gray-200">
+  <h3 class="text-xl font-bold text-gray-900 mb-4">Additional Resources</h3>
+  
+  <% 
+  // Group resources by type
+  const grouped = {
+    pdf: [],
+    image: [],
+    presentation: [],
+    video: [],
+    link: []
+  };
+  
+  resources.forEach(r => {
+    if (grouped[r.type]) {
+      grouped[r.type].push(r);
+    } else if (r.external) {
+      if (r.url && r.url.includes('youtube.com') || r.url && r.url.includes('youtu.be') || r.url && r.url.includes('vimeo.com')) {
+        grouped.video.push(r);
+      } else {
+        grouped.link.push(r);
+      }
+    }
+  });
+  %>
+  
+  <% if (grouped.pdf.length > 0 || grouped.presentation.length > 0) { %>
+  <div class="mb-6">
+    <h4 class="text-lg font-semibold text-gray-800 mb-3">📄 Documents</h4>
+    <div class="space-y-2">
+      <% [...grouped.pdf, ...grouped.presentation].forEach(resource => { %>
+      <div class="p-3 bg-gray-50 rounded border border-gray-200 hover:bg-gray-100">
+        <a href="<%= resource.url %>" class="flex items-start gap-3" <% if (resource.external) { %>target="_blank" rel="noopener"<% } else { %>download<% } %>>
+          <span class="text-2xl">📄</span>
+          <div class="flex-1">
+            <p class="font-semibold text-gray-900"><%= resource.title %></p>
+            <% if (resource.description) { %>
+            <p class="text-sm text-gray-600"><%= resource.description %></p>
+            <% } %>
+          </div>
+          <span class="text-blue-600 text-sm">Download →</span>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+  
+  <% if (grouped.image.length > 0) { %>
+  <div class="mb-6">
+    <h4 class="text-lg font-semibold text-gray-800 mb-3">🖼️ Graphics & Visuals</h4>
+    <div class="space-y-2">
+      <% grouped.image.forEach(resource => { %>
+      <div class="p-3 bg-gray-50 rounded border border-gray-200 hover:bg-gray-100">
+        <a href="<%= resource.url %>" class="flex items-start gap-3" target="_blank" rel="noopener">
+          <span class="text-2xl">🖼️</span>
+          <div class="flex-1">
+            <p class="font-semibold text-gray-900"><%= resource.title %></p>
+            <% if (resource.description) { %>
+            <p class="text-sm text-gray-600"><%= resource.description %></p>
+            <% } %>
+          </div>
+          <span class="text-blue-600 text-sm">View →</span>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+  
+  <% if (grouped.video.length > 0) { %>
+  <div class="mb-6">
+    <h4 class="text-lg font-semibold text-gray-800 mb-3">🎥 Videos</h4>
+    <div class="space-y-2">
+      <% grouped.video.forEach(resource => { %>
+      <div class="p-3 bg-gray-50 rounded border border-gray-200 hover:bg-gray-100">
+        <a href="<%= resource.url %>" class="flex items-start gap-3" target="_blank" rel="noopener">
+          <span class="text-2xl">🎥</span>
+          <div class="flex-1">
+            <p class="font-semibold text-gray-900"><%= resource.title %></p>
+            <% if (resource.description) { %>
+            <p class="text-sm text-gray-600"><%= resource.description %></p>
+            <% } %>
+          </div>
+          <span class="text-blue-600 text-sm">Watch →</span>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+  
+  <% if (grouped.link.length > 0) { %>
+  <div class="mb-6">
+    <h4 class="text-lg font-semibold text-gray-800 mb-3">🔗 External References</h4>
+    <div class="space-y-2">
+      <% grouped.link.forEach(resource => { %>
+      <div class="p-3 bg-gray-50 rounded border border-gray-200 hover:bg-gray-100">
+        <a href="<%= resource.url %>" class="flex items-start gap-3" target="_blank" rel="noopener">
+          <span class="text-2xl">🔗</span>
+          <div class="flex-1">
+            <p class="font-semibold text-gray-900"><%= resource.title %></p>
+            <% if (resource.description) { %>
+            <p class="text-sm text-gray-600"><%= resource.description %></p>
+            <% } %>
+          </div>
+          <span class="text-blue-600 text-sm">Visit →</span>
+        </a>
+      </div>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</div>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= article.title %><%= config.seo.meta_title_suffix %></title>
+  <meta name="description" content="<%= article.meta_description %>">
+  <meta name="author" content="<%= author.full_name %>">
+  <link rel="canonical" href="<%= config.site.url %><%= config.paths.articles %>/<%= article.slug %>/">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="<%= article.title %>">
+  <meta property="og:description" content="<%= article.meta_description %>">
+  <meta property="og:image" content="<%= config.site.url %><%= article.featured_image %>">
+  <meta property="og:url" content="<%= config.site.url %><%= config.paths.articles %>/<%= article.slug %>/">
+  <meta property="og:type" content="article">
+  <meta property="article:published_time" content="<%= article.publish_date %>">
+  <meta property="article:author" content="<%= author.full_name %>">
+  <meta property="article:section" content="<%= category.name %>">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= article.title %>">
+  <meta name="twitter:description" content="<%= article.meta_description %>">
+  <meta name="twitter:image" content="<%= config.site.url %><%= article.featured_image %>">
+  <% if (config.seo.twitter_handle) { %>
+  <meta name="twitter:site" content="<%= config.seo.twitter_handle %>">
+  <% } %>
+  
+  <!-- Schema.org JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "<%= article.title %>",
+    <% if (article.subtitle) { %>
+    "alternativeHeadline": "<%= article.subtitle %>",
+    <% } %>
+    "image": {
+      "@type": "ImageObject",
+      "url": "<%= config.site.url %><%= article.featured_image %>"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "<%= author.full_name %>",
+      "url": "<%= config.site.url %><%= config.paths.authors %>/<%= author.id %>"
+      <% if (author.linkedin) { %>,
+      "sameAs": ["<%= author.linkedin %>"]
+      <% } %>
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "<%= config.site.name %>",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "<%= config.site.url %><%= config.branding.logo %>"
+      }
+    },
+    "datePublished": "<%= article.publish_date %>",
+    "articleSection": "<%= category.name %>",
+    "wordCount": <%= article.word_count %>,
+    "keywords": "<%= topics.map(t => t.name).join(', ') %>"
+  }
+  </script>
+  
+  <link href="<%= config.paths.assets %>/css/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+  <!-- Header -->
+  <header class="bg-white shadow-sm border-b">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold" style="color: <%= config.branding.primary_color %>"><%= config.site.name %></h1>
+          <p class="text-sm text-gray-600"><%= config.site.tagline %></p>
+        </div>
+        <nav class="flex gap-4 text-sm">
+          <a href="<%= config.paths.articles_index %>" class="hover:underline">Articles</a>
+          <a href="<%= config.site.url %>" class="hover:underline">Home</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Breadcrumb -->
+  <div class="bg-white border-b">
+    <div class="container mx-auto px-4 py-2 text-sm text-gray-600">
+      <a href="<%= config.site.url %>" class="hover:underline">Home</a> → 
+      <a href="<%= config.paths.articles_index %>" class="hover:underline">Articles</a> → 
+      <a href="<%= config.paths.articles_index %>?category=<%= category.slug %>" class="hover:underline"><%= category.name %></a> → 
+      <span class="text-gray-900"><%= article.title %></span>
+    </div>
+  </div>
+
+  <!-- Article Content -->
+  <main class="container mx-auto px-4 py-8 max-w-4xl">
+    <article class="bg-white rounded-lg shadow-md p-8">
+      <!-- Category Badge -->
+      <div class="mb-4">
+        <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full" 
+          style="background-color: <%= config.branding.accent_color %>; color: white;">
+          <%= category.name %>
+        </span>
+      </div>
+
+      <!-- Featured Image -->
+      <% if (article.featured_image) { %>
+      <img src="<%= article.featured_image %>" alt="<%= article.title %>" class="w-full rounded-lg mb-6">
+      <% } %>
+
+      <!-- Title & Subtitle -->
+      <h1 class="text-4xl font-bold text-gray-900 mb-4"><%= article.title %></h1>
+      <% if (article.subtitle) { %>
+      <h2 class="text-2xl text-gray-700 mb-6"><%= article.subtitle %></h2>
+      <% } %>
+
+      <!-- Author Info & Meta -->
+      <div class="flex items-center gap-4 py-4 border-y border-gray-200 mb-6">
+        <% if (author.photo) { %>
+        <img src="<%= author.photo %>" alt="<%= author.full_name %>" class="w-16 h-16 rounded-full">
+        <% } %>
+        <div class="flex-1">
+          <p class="font-semibold text-gray-900"><%= author.full_name %></p>
+          <p class="text-sm text-gray-600">
+            <%= new Date(article.publish_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %> · 
+            <%= article.read_time %> min read · 
+            <%= article.word_count.toLocaleString() %> words
+          </p>
+        </div>
+      </div>
+
+      <!-- Article Body -->
+      <div class="prose prose-lg max-w-none">
+        <%- article.body %>
+      </div>
+
+      <!-- PDF Download -->
+      <% if (article.pdf_url && config.features.pdf_downloads) { %>
+      <div class="mt-8 p-4 bg-blue-50 rounded-lg">
+        <a href="<%= article.pdf_url %>" class="flex items-center gap-2 text-blue-700 font-semibold hover:underline" download>
+          📄 Download PDF Version
+        </a>
+      </div>
+      <% } %>
+
+      <!-- Additional Resources (if any) -->
+      <% if (config.features.additional_resources && article.additional_resources && article.additional_resources.length > 0) { %>
+        <%- include('partials/additional-resources', { resources: article.additional_resources, config: config, article: article }) %>
+      <% } %>
+
+      <!-- Tags Section -->
+      <div class="mt-8 pt-8 border-t border-gray-200">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Related Tags</h3>
+
+        <% if (zones.length > 0) { %>
+        <div class="mb-4">
+          <p class="text-sm font-semibold text-gray-700 mb-2">PMH Zones:</p>
+          <div class="flex flex-wrap gap-2">
+            <% zones.forEach(zone => { %>
+              <span class="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
+                <%= zone.number %>. <%= zone.name %>
+              </span>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+
+        <% if (challenges.length > 0) { %>
+        <div class="mb-4">
+          <p class="text-sm font-semibold text-gray-700 mb-2">MegaChallenges:</p>
+          <div class="flex flex-wrap gap-2">
+            <% challenges.forEach(challenge => { %>
+              <span class="px-3 py-1 bg-red-100 text-red-800 text-sm rounded-full">
+                <%= challenge.name %>
+              </span>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+
+        <% if (topics.length > 0) { %>
+        <div class="mb-4">
+          <p class="text-sm font-semibold text-gray-700 mb-2">Topics:</p>
+          <div class="flex flex-wrap gap-2">
+            <% topics.forEach(topic => { %>
+              <span class="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
+                #<%= topic.name %>
+              </span>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+
+        <% if (entities.length > 0) { %>
+        <div class="mb-4">
+          <p class="text-sm font-semibold text-gray-700 mb-2">Entities:</p>
+          <div class="flex flex-wrap gap-2">
+            <% entities.forEach(entity => { %>
+              <span class="px-3 py-1 bg-purple-100 text-purple-800 text-sm rounded-full">
+                <%= entity.name %>
+              </span>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+
+      <!-- Share Buttons -->
+      <div class="mt-8 pt-8 border-t border-gray-200">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">Share This Article</h3>
+        <div class="flex gap-4">
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=<%= encodeURIComponent(config.site.url + config.paths.articles + '/' + article.slug + '/') %>"
+             target="_blank" rel="noopener"
+             class="px-4 py-2 bg-blue-700 text-white rounded hover:bg-blue-800">
+            LinkedIn
+          </a>
+          <a href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(article.title) %>&url=<%= encodeURIComponent(config.site.url + config.paths.articles + '/' + article.slug + '/') %>"
+             target="_blank" rel="noopener"
+             class="px-4 py-2 bg-sky-500 text-white rounded hover:bg-sky-600">
+            Twitter/X
+          </a>
+          <a href="mailto:?subject=<%= encodeURIComponent(article.title) %>&body=<%= encodeURIComponent(config.site.url + config.paths.articles + '/' + article.slug + '/') %>"
+             class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+            Email
+          </a>
+        </div>
+      </div>
+
+      <!-- Author Bio -->
+      <% if (config.features.author_bios && author) { %>
+      <div class="mt-8 pt-8 border-t border-gray-200">
+        <h3 class="text-xl font-bold text-gray-900 mb-4">About the Author</h3>
+        <div class="flex gap-4">
+          <% if (author.photo) { %>
+          <img src="<%= author.photo %>" alt="<%= author.full_name %>" class="w-24 h-24 rounded-full">
+          <% } %>
+          <div class="flex-1">
+            <h4 class="text-lg font-bold text-gray-900"><%= author.full_name %></h4>
+            <p class="text-sm text-gray-600"><%= author.title %><% if (author.organization) { %>, <%= author.organization %><% } %></p>
+            <% if (author.bio) { %>
+            <p class="text-gray-700 mt-2"><%= author.bio %></p>
+            <% } %>
+            <% if (author.linkedin || author.website) { %>
+            <div class="flex gap-4 mt-2 text-sm">
+              <% if (author.linkedin) { %>
+              <a href="<%= author.linkedin %>" target="_blank" rel="noopener" class="text-blue-600 hover:underline">LinkedIn</a>
+              <% } %>
+              <% if (author.website) { %>
+              <a href="<%= author.website %>" target="_blank" rel="noopener" class="text-blue-600 hover:underline">Website</a>
+              <% } %>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+      <% } %>
+    </article>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white mt-12 py-8">
+    <div class="container mx-auto px-4 text-center">
+      <p>&copy; <%= new Date().getFullYear() %> <%= config.site.name %>. All rights reserved.</p>
+      <p class="text-sm text-gray-400 mt-2"><%= config.site.description %></p>
+    </div>
+  </footer>
+</body>
+</html>

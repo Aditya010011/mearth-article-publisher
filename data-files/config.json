@@ -1,0 +1,52 @@
+{
+  "site": {
+    "name": "Mearth",
+    "tagline": "Exploring the Earth-Moon Economic Ecosystem",
+    "url": "https://mearth.com",
+    "description": "A platform dedicated to understanding and building the interconnected Moon-Earth system through thought leadership, research, and systems thinking.",
+    "contact_email": "info@moonhut.org"
+  },
+  "paths": {
+    "base": "/discover",
+    "articles": "/discover/articles",
+    "articles_index": "/discover/articles-index",
+    "assets": "/assets",
+    "authors": "/authors"
+  },
+  "branding": {
+    "logo": "/assets/images/mearth-logo.png",
+    "favicon": "/assets/images/favicon.ico",
+    "primary_color": "#1a365d",
+    "secondary_color": "#2d3748",
+    "accent_color": "#3182ce"
+  },
+  "defaults": {
+    "author_id": "david-goldsmith",
+    "articles_per_page": 20,
+    "excerpt_length": 300,
+    "read_speed_wpm": 200
+  },
+  "seo": {
+    "meta_title_suffix": "| Mearth",
+    "default_og_image": "/assets/images/mearth-og-default.jpg",
+    "twitter_handle": "@projectmoonhut"
+  },
+  "features": {
+    "pdf_downloads": true,
+    "author_bios": true,
+    "related_articles": false,
+    "comments": false,
+    "analytics": false
+  },
+  "export": {
+    "zip_filename_prefix": "mearth-articles-export",
+    "include_sitemap": true,
+    "compress_images": false
+  },
+  "metadata": {
+    "version": "1.0",
+    "environment": "development",
+    "updated": "2026-05-19",
+    "note": "This configuration file controls all site-specific settings. Edit values here to customize the system without touching code."
+  }
+}

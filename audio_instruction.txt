@@ -1,0 +1,91 @@
+I'm doing the recording here because I think that potentially having my voice as an overview of what I'm looking to accomplish, it might be helpful for you and the system to pick up certain nuances that are not written in the text that I gave, as well as the imagery. 
+
+But I think it's pretty good. Let me explain what I've put together. I put it together for me, but after our conversation, I thought maybe there's something that could be done on your end from the system that you've built, because as I heard what you've shared, I think it can create a back-end system that might be useful to move what we're trying to do forward. 
+
+I don't know if it's the right application, but I'm willing to give it a shot. Let me explain what's happening. On our website, we have a Discover tab, and inside of that, we have several different types of delivery that individuals can receive from going down the tabs. 
+
+And right now, we have Project Moon, the Age of Infinite podcast. We have the Redefining podcast, and we have wallpapers. We used to have on there articles, but the managing of it was extremely complicated, and tagging and working through it was even more so. 
+
+We also ran into a challenge. The existing system was built as a dynamic system for the podcasts, and none of them get scanned by Google because it's dynamic, not a static HTML. So what I wanted to do was to build a website, an uploader, so that when we put articles up, the articles can immediately be tagged in. 
+
+And we have over 200 of them, as well as 100 podcasts, as well as 1,000 images. We've got a lot. And I haven't been able to get them up, and it's killing me. So this is the architecture that we're looking to accomplish. 
+
+And as you can see, if you start at the top and then go across zigzag, going across and down, what we'd like to do is create a system overlay that there's a meta side with heavy engine, and then there's a more media gallery type activity. 
+
+Those would then be put onto our website. So all I'd have to do is take whatever that artifact is and human and automated. I don't think it should be completely automated, especially in the beginning until we understand the nuances of it. 
+
+But it would automatically create the slug, the file detection, thumbnails if necessary. All of those pieces could be generated. So let's take a paper and let's assume I put two examples of two papers here. 
+
+Let's say I took a paper. It could be the Word document because the imagery is separated or a PDF. They tend to have an image header and sometimes, sometimes they have additional images in between, whether they be a model or a diagram or a chart or an image. 
+
+I'd like you to be able to extract the few pieces that would come out of it. For example, the title, the subtitle, the copy, the paragraphs that are all there, as well as who wrote it, what is the copyright, all of the information would be extracted from that one artifact. 
+
+Then there are a few things that would have to be determined, and it can easily do some of these, but they could just be put into an online form. It would be whether it's part of the Project Moon Hawk classification system, and I can give you the details on that if you need them, but it's whether it's 1 through 15, whether there's anything inside of it with the six mega challenges, as well as any other links that are combined with it. 
+
+So would pull all of that out, give it the tagging, automate certain rule-based functions that we have, and it would be able to then generate something that could be put on a stat on a HTML page. At the same time, a database is set up for a new submitter. 
+
+So let's say David is the person who wrote the piece. Then there would be a place where we could look up their LinkedIn profile. We could look up their Facebook, their Instagram, and put in a bio. We could put in if there's any books that they have from Amazon. 
+
+And we can create a profile of individuals who are contributing to Project Moon Hut. And you could see that in the illustration or graphic that I've created. Then once that's created, there's a sample. 
+
+You could see article header and then articles. That's a kind of sample. There's a header and then there are categories, primary categories, and it puts them into the categories with the ability to sort for whatever you're looking for. 
+
+So you could sort by title, by author, by date, Mirth link, Mirth Space Industries. You could sort by Mirth Eterna. You could sort by the classification system. So you can do a variety of different sorts. 
+
+The articles are then put online and someone can scan down them and choose them the normal way. And then when someone clicks on it, what will happen is it will have, it'll go to an HTML page that's already generated. 
+
+It's not dynamic. It's static. It'll put the header in. It'll put the title and all the information it's pulled out. If there's a PDF, for example, if I just gave a PDF, that PDF could be downloaded. 
+
+Someone would have to give their email or something if they want to download the PDF or have it sent to them. So they'd have to give an email to have it sent to their file. There are infographics. We have infographics for many of these, so maybe that could be uploaded. 
+
+There might be a deck that's been created or even a video. I've been using Notebook LM and creating about 100 videos already because we've got these 200 articles plus more. It'll also put the author and everything at the bottom. 
+
+And then there'll be a static HTML that can be searched by Google. Even though it's only the first 4,000 words, I believe it is, it could be searched. And we don't get that. We also don't get time on screen because I'm sending all of the videos to the articles and pieces to people. 
+
+So there's no time on the website. Now we also have videos. They're typically put onto YouTube and then we place them in here. We'd give the YouTube link. We'd place it in, but we'd have to do some certain things in there. 
+
+For example, we would also do the Project Muna classification system 1 through 15, the mega challenges. The engine itself could pull out the description, the summary, unless we've got one to override. 
+
+So there's a control panel. You'll see it. You can edit it and approve it and put it in. There would also be the database about the author, again, and there might be multiple authors. On articles, there could be multiple authors. 
+
+So we have to make sure that there's multiple authors are capable. Then it would do the exact same thing, video header. And then the videos are like YouTube. They just go down in sequence. They do not have to be sorted by category. 
+
+Someone can do a filter and keep track of the number of videos. I think we have like 100 and well, just on YouTube, we have about 130. Plus, I've just generated another 60 or 70 more. So that's 200. Then it would create for what we want to do is put the transcript underneath on many of these videos. 
+
+So if it's sitting on our page, we could put the transcript off of YouTube. I don't know if that's the API you could pull from that. Or it will generate there will be a header on the page. It will put all the information. 
+
+There will be a transcript. It'll also put the Project Munda classification system, different ways to sort, all the tags, and then the author at the bottom of it. So that's the second one. Now the podcast, a little bit different. 
+
+We have a podcast. We want to put the full transcription. Some of these podcasts are two, three, four hours. The longest one is five hours long. I'm using a service called Podbean. We do have two different podcasts, Age of Infinite and Redefining Tomorrow. 
+
+And right now, you can go to the website, you click on it, you'll see a picture of an individual with a short little background on them. And then you click on it and you go to a dynamically built page. 
+
+I would like it to be static and it would have all the information. So I put a sample of Hans Kuhnesman and it will have their LinkedIn, their YouTube, Facebook, Instagram, X, TikTok. It'll give their bio or their information about the episode. 
+
+It'll also allow someone, we don't care if they listen to it on our feed or other feeds. We don't care. Then there will be a transcript. And at the bottom of the transcript, it could put, well, I don't know if there's anything that has to be on the bottom of it, just besides copyright. 
+
+Then the next one is wallpapers. Again, you could see it online. We have about 20 or 30. But it does the exact same thing. This could be automated or not. I guess it can be automated with an engine. We give it an image. 
+
+You see an image that's there. It detects whether it's desktop or mobile. It'll detect the file type and the thumbnail quality, the resolution. And then it will categorize it into primary, secondary, and tertiary, A, B, and C. 
+
+So that someone can say, hey, I want to sort for this. And then they can, the behavior is they can grab them and download them. And so I've put an example of how it is on our website right now. Someone can go in and they can pull them down. 
+
+So that's the one more. And then there's one more, which is, again, just generic. Graphic, more gallery. We stick in an infographic. That's a sample of one. The infographic has a title. It has a line description. 
+
+It has information. It'll be as an image that someone might want to take down. Is there a related paper? So the infographic you're looking at came from a paper. And there's also a deck. And there's also an explainer video for that one image that you're looking at. 
+
+Well, we'd like to be able to put them in so someone can have that capability. Then they can go to an infographics page and there's just a series of them. They go down. We have them for MirthLink and Mirth Space Industries and Mirth Cultiva and the Mirth Habitus, Mirth Energy. 
+
+So they'll just be in sequence. Someone could click on whatever they like. They'd pop up in the screen so that someone could look at it. And if they want, they could download them. And I don't, based upon the way you are talking, and sorry if I'm not trying to impose, the way you are talking, this type of system could be 90% built without any human interaction. 
+
+I don't know if this is perfect for it, for what you're doing in the ecosystem code, but I think this is not a great test case, but it would be amazing because it would save tons of time. And it would also be able to add all these articles that we've got. 
+
+And there are 200. There are 200 finished articles. Some of them are one page, some are four pages, some are 30 pages. And we want to put them up because I think that'll help us as we're getting more and more traction for funding, meant more and more traction for people helping. 
+
+We just spoke to a company yesterday and on the day before yesterday. They are very interested in exchange systems. So this would allow individuals to come and engage with what we're about. And some people like video, some people like infographics, some people like you want to read something. 
+
+That'll give individuals the capability to do a lot. And I'm then not sending people things. I have a feeling that once we're up and running, individuals will find one piece, they'll go to the next piece, they'll go to the next piece, especially people who are looking for massive change worldwide. 
+
+So I don't know if this works. I'm hoping you say, oh my God, this is a piece of cake. This could easily be generated. And you can use it as a sample for something that's successful. And I can help you with whatever you need in terms of more descriptions. 
+
+But I figured I'd create this audio because the audio might be able to be helpful too. Hope that helps. This would be a lifesaver. I started working on it and it would be a lifesaver. So thank you. Hopefully, it's thank you. 

@@ -1,0 +1,114 @@
+{
+  "zones": [
+    {
+      "id": "earth",
+      "number": 1,
+      "name": "Earth",
+      "slug": "earth",
+      "description": "The planet where we live, complete with land, water, and air. The third planet from the sun."
+    },
+    {
+      "id": "atmosphere",
+      "number": 2,
+      "name": "Atmosphere",
+      "slug": "atmosphere",
+      "description": "The layer of air that surrounds our planet, composed primarily of nitrogen and oxygen."
+    },
+    {
+      "id": "low-earth-orbit",
+      "number": 3,
+      "name": "Low Earth Orbit (LEO)",
+      "slug": "low-earth-orbit",
+      "description": "The area in space closest to Earth, typically 200-2,000 km above the surface."
+    },
+    {
+      "id": "medium-earth-orbit",
+      "number": 4,
+      "name": "Medium Earth Orbit (MEO)",
+      "slug": "medium-earth-orbit",
+      "description": "Higher than LEO but closer than HEO, approximately 2,000-35,786 km above Earth."
+    },
+    {
+      "id": "high-earth-orbit",
+      "number": 5,
+      "name": "High Earth Orbit (HEO)",
+      "slug": "high-earth-orbit",
+      "description": "Farthest from Earth among the three main orbit types, above 35,786 km."
+    },
+    {
+      "id": "space-between-heo-moon",
+      "number": 6,
+      "name": "Space Between HEO and Moon Orbit",
+      "slug": "space-between-heo-moon",
+      "description": "The cis-lunar space extending from geostationary orbit to the Moon's orbit."
+    },
+    {
+      "id": "moon-orbit",
+      "number": 7,
+      "name": "Moon Orbit",
+      "slug": "moon-orbit",
+      "description": "The orbital region around the Moon, approximately 384,400 km from Earth."
+    },
+    {
+      "id": "the-moon",
+      "number": 8,
+      "name": "The Moon",
+      "slug": "the-moon",
+      "description": "Earth's only natural satellite, where the first human landing occurred in 1969."
+    },
+    {
+      "id": "mearth-line",
+      "number": 9,
+      "name": "The Mearth Line",
+      "slug": "mearth-line",
+      "description": "A conceptual sphere with a 297,000-mile radius encompassing the Moon-Earth system."
+    },
+    {
+      "id": "space-between-moon-mars",
+      "number": 10,
+      "name": "Space Between Moon and Mars",
+      "slug": "space-between-moon-mars",
+      "description": "Interplanetary space lying between the Moon's orbit and Mars's atmosphere."
+    },
+    {
+      "id": "mars-atmosphere-orbit",
+      "number": 11,
+      "name": "Mars Atmosphere/Orbit",
+      "slug": "mars-atmosphere-orbit",
+      "description": "The thin Martian atmosphere and orbital region around the Red Planet."
+    },
+    {
+      "id": "mars",
+      "number": 12,
+      "name": "Mars",
+      "slug": "mars",
+      "description": "The fourth planet from the Sun, often called the Red Planet."
+    },
+    {
+      "id": "phobos",
+      "number": 13,
+      "name": "Phobos",
+      "slug": "phobos",
+      "description": "The larger of Mars's two moons, known for its irregular shape."
+    },
+    {
+      "id": "deimos",
+      "number": 14,
+      "name": "Deimos",
+      "slug": "deimos",
+      "description": "The smaller and more distant of Mars's two moons."
+    },
+    {
+      "id": "beyond",
+      "number": 15,
+      "name": "Beyond",
+      "slug": "beyond",
+      "description": "Everything else in the Universe beyond the immediate scope of the Mearth system."
+    }
+  ],
+  "metadata": {
+    "note": "The Project Moon Hut Classification System defines 15 geographic zones from Earth to Beyond, representing different operational regions in the expanding Mearth ecosystem.",
+    "version": "1.0",
+    "updated": "2026-05-19"
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "entities": [
+    {
+      "id": "mearthlink",
+      "name": "MearthLink",
+      "slug": "mearthlink",
+      "description": "Connectivity and communication infrastructure for the Mearth ecosystem"
+    },
+    {
+      "id": "mearth-space-industries",
+      "name": "Mearth Space Industries",
+      "slug": "mearth-space-industries",
+      "description": "Industrial operations and manufacturing capabilities in the Mearth system"
+    },
+    {
+      "id": "mearth-cultiva",
+      "name": "Mearth Cultiva",
+      "slug": "mearth-cultiva",
+      "description": "Agricultural and food production systems for sustainable ecosystems"
+    },
+    {
+      "id": "mearth-habitus",
+      "name": "Mearth Habitus",
+      "slug": "mearth-habitus",
+      "description": "Human habitation infrastructure and life support systems"
+    },
+    {
+      "id": "mearth-energy",
+      "name": "Mearth Energy",
+      "slug": "mearth-energy",
+      "description": "Power generation, storage, and distribution systems"
+    },
+    {
+      "id": "mearth-eterna",
+      "name": "Mearth Eterna",
+      "slug": "mearth-eterna",
+      "description": "Long-term sustainability and legacy planning initiatives"
+    },
+    {
+      "id": "pmh-foundation",
+      "name": "Project Moon Hut Foundation",
+      "slug": "pmh-foundation",
+      "description": "The foundational organization coordinating the Mearth initiative"
+    }
+  ],
+  "metadata": {
+    "version": "1.0",
+    "updated": "2026-05-19"
+  }
+}
