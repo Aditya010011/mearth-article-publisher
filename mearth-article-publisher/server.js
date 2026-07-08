@@ -10,14 +10,23 @@ const archiver = require('archiver');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Load configuration and data
-const config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
-const authors = JSON.parse(fs.readFileSync('./data/authors.json', 'utf8'));
-const categories = JSON.parse(fs.readFileSync('./data/categories.json', 'utf8'));
-const pmhZones = JSON.parse(fs.readFileSync('./data/pmh-zones.json', 'utf8'));
-const megaChallenges = JSON.parse(fs.readFileSync('./data/mega-challenges.json', 'utf8'));
-const entities = JSON.parse(fs.readFileSync('./data/entities.json', 'utf8'));
-const topics = JSON.parse(fs.readFileSync('./data/topics.json', 'utf8'));
+// Load configuration and data with error handling
+let config, authors, categories, pmhZones, megaChallenges, entities, topics;
+
+try {
+  config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8'));
+  authors = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'authors.json'), 'utf8'));
+  categories = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'categories.json'), 'utf8'));
+  pmhZones = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'pmh-zones.json'), 'utf8'));
+  megaChallenges = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'mega-challenges.json'), 'utf8'));
+  entities = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'entities.json'), 'utf8'));
+  topics = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'topics.json'), 'utf8'));
+  console.log('✓ Configuration and data files loaded successfully');
+} catch (error) {
+  console.error('❌ ERROR loading configuration files:', error.message);
+  console.error('Make sure all data files exist in the correct locations');
+  process.exit(1);
+}
 
 // Middleware
 app.use(express.json());
@@ -29,14 +38,16 @@ app.set('views', path.join(__dirname, 'templates'));
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = './uploads';
+    const uploadDir = path.join(__dirname, 'uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, Date.now() + '-' + file.originalname);
+    // Sanitize filename - replace spaces with hyphens, keep original extension
+    const sanitized = file.originalname.replace(/\s+/g, '-');
+    cb(null, Date.now() + '-' + sanitized);
   }
 });
 
@@ -91,17 +102,20 @@ function createSlug(title) {
 }
 
 function countWords(text) {
-  return text.trim().split(/\s+/).length;
+  if (!text) return 0;
+  return text.trim().split(/\s+/).filter(word => word.length > 0).length;
 }
 
 function calculateReadTime(wordCount) {
-  return Math.ceil(wordCount / config.defaults.read_speed_wpm);
+  const readSpeed = config?.defaults?.read_speed_wpm || 200;
+  return Math.ceil(wordCount / readSpeed);
 }
 
-function createExcerpt(text, length = config.defaults.excerpt_length) {
+function createExcerpt(text, length = null) {
+  const excerptLength = length || config?.defaults?.excerpt_length || 200;
   const plainText = text.replace(/<[^>]*>/g, '').trim();
-  if (plainText.length <= length) return plainText;
-  return plainText.substring(0, length).trim() + '...';
+  if (plainText.length <= excerptLength) return plainText;
+  return plainText.substring(0, excerptLength).trim() + '...';
 }
 
 // Routes
@@ -157,6 +171,9 @@ app.post('/parse', upload.fields([
     // Extract title, subtitle, and body
     const parsed = parseArticleHTML(html);
 
+    // Check for duplicates
+    const duplicateWarning = await checkDuplicateContent(parsed.title, parsed.body);
+
     res.json({
       success: true,
       data: {
@@ -168,7 +185,8 @@ app.post('/parse', upload.fields([
           docx: docxFile.filename,
           pdf: pdfFile ? pdfFile.filename : null,
           image: imageFile ? imageFile.filename : null
-        }
+        },
+        duplicateWarning: duplicateWarning
       }
     });
 
@@ -196,6 +214,88 @@ function parseArticleHTML(html) {
   body = body.trim();
 
   return { title, subtitle, body };
+}
+
+// Helper function to check for duplicate content
+async function checkDuplicateContent(title, body) {
+  try {
+    const indexPath = path.join(__dirname, 'output', 'assets', 'data', 'articles.json');
+
+    if (!fs.existsSync(indexPath)) {
+      return null; // No articles yet, no duplicates possible
+    }
+
+    const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+    const articles = index.articles || [];
+
+    if (articles.length === 0) return null;
+
+    // Normalize text for comparison
+    const normalizeText = (text) => {
+      return text.replace(/<[^>]*>/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+    };
+
+    const newTitleNorm = normalizeText(title);
+    const newBodyNorm = normalizeText(body);
+    const newBodyWords = newBodyNorm.split(' ');
+
+    // Check each existing article
+    for (const article of articles) {
+      const existingTitleNorm = normalizeText(article.title);
+
+      // Check title similarity (exact match)
+      if (existingTitleNorm === newTitleNorm) {
+        return {
+          level: 'high',
+          message: `⚠️ WARNING: An article with the same title already exists: "${article.title}"`,
+          matchedArticle: article.slug,
+          similarity: 100
+        };
+      }
+
+      // Check content similarity (word overlap)
+      // Read the article body from disk
+      const articlePath = path.join(__dirname, 'output', 'discover', 'articles', article.slug, 'index.html');
+      if (fs.existsSync(articlePath)) {
+        const existingHTML = fs.readFileSync(articlePath, 'utf8');
+        const existingBodyMatch = existingHTML.match(/<div class="prose[^>]*>(.*?)<\/div>/s);
+
+        if (existingBodyMatch) {
+          const existingBodyNorm = normalizeText(existingBodyMatch[1]);
+          const existingBodyWords = existingBodyNorm.split(' ');
+
+          // Calculate Jaccard similarity (intersection over union)
+          const newSet = new Set(newBodyWords);
+          const existingSet = new Set(existingBodyWords);
+          const intersection = new Set([...newSet].filter(x => existingSet.has(x)));
+          const union = new Set([...newSet, ...existingSet]);
+
+          const similarity = (intersection.size / union.size) * 100;
+
+          if (similarity > 70) {
+            return {
+              level: 'high',
+              message: `⚠️ WARNING: Content is ${similarity.toFixed(0)}% similar to existing article: "${article.title}"`,
+              matchedArticle: article.slug,
+              similarity: similarity.toFixed(0)
+            };
+          } else if (similarity > 40) {
+            return {
+              level: 'medium',
+              message: `⚠️ NOTICE: Content is ${similarity.toFixed(0)}% similar to existing article: "${article.title}"`,
+              matchedArticle: article.slug,
+              similarity: similarity.toFixed(0)
+            };
+          }
+        }
+      }
+    }
+
+    return null; // No significant duplicates found
+  } catch (error) {
+    console.error('Error checking duplicates:', error);
+    return null; // Don't block on error
+  }
 }
 
 // Generate article HTML and save
@@ -232,8 +332,12 @@ app.post('/generate', upload.fields([
 
     if (articleData.files.image) {
       const imageSource = path.join(__dirname, 'uploads', articleData.files.image);
-      const imageDest = path.join(articleDir, 'featured-image.jpg');
+      // Get the file extension from the original filename
+      const imageExt = path.extname(articleData.files.image);
+      const imageDest = path.join(articleDir, `featured-image${imageExt}`);
       fs.copyFileSync(imageSource, imageDest);
+      // Store the actual image filename for use in the article
+      articleData.files.imageFilename = `featured-image${imageExt}`;
     }
 
     // Process additional resources
@@ -278,15 +382,17 @@ app.post('/generate', upload.fields([
       publish_date: articleData.publish_date || new Date().toISOString().split('T')[0],
       word_count: articleData.wordCount || countWords(articleData.body),
       read_time: calculateReadTime(articleData.wordCount || countWords(articleData.body)),
-      featured_image: `${config.paths.articles}/${slug}/featured-image.jpg`,
+      featured_image: articleData.files.imageFilename ? `${config.paths.articles}/${slug}/${articleData.files.imageFilename}` : null,
       pdf_url: articleData.files.pdf ? `${config.paths.articles}/${slug}/${slug}.pdf` : null,
       primary_category: articleData.primary_category,
+      secondary_category: articleData.secondary_category || null,
       pmh_zones: articleData.pmh_zones || [],
       mega_challenges: articleData.mega_challenges || [],
       topics: articleData.topics || [],
       entities: articleData.entities || [],
       additional_resources: processedResources,
       meta_description: articleData.meta_description || createExcerpt(articleData.body, 160),
+      contact_info: articleData.contact_info || null,
       created_at: new Date().toISOString()
     };
 
@@ -352,7 +458,7 @@ async function renderArticlePage(article) {
 
 // Helper function to update articles index
 function updateArticlesIndex(article) {
-  const indexPath = './output/assets/data/articles.json';
+  const indexPath = path.join(__dirname, 'output', 'assets', 'data', 'articles.json');
   const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
 
   // Remove existing entry if updating
@@ -387,9 +493,15 @@ function updateArticlesIndex(article) {
 // Export all articles as ZIP
 app.get('/export', (req, res) => {
   try {
+    // Ensure exports directory exists
+    const exportsDir = path.join(__dirname, 'exports');
+    if (!fs.existsSync(exportsDir)) {
+      fs.mkdirSync(exportsDir, { recursive: true });
+    }
+
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
     const zipFilename = `${config.export.zip_filename_prefix}-${timestamp}.zip`;
-    const zipPath = path.join(__dirname, 'exports', zipFilename);
+    const zipPath = path.join(exportsDir, zipFilename);
 
     const output = fs.createWriteStream(zipPath);
     const archive = archiver('zip', { zlib: { level: 9 } });
@@ -415,9 +527,12 @@ app.get('/export', (req, res) => {
     archive.pipe(output);
 
     // Add output directory contents to ZIP
-    archive.directory('./output/', false);
+    const outputDir = path.join(__dirname, 'output');
+    archive.directory(outputDir, false);
 
     // Create upload instructions
+    const indexData = JSON.parse(fs.readFileSync(path.join(__dirname, 'output', 'assets', 'data', 'articles.json'), 'utf8'));
+
     const instructions = `UPLOAD INSTRUCTIONS
 ===================
 
@@ -436,7 +551,7 @@ app.get('/export', (req, res) => {
 Questions? Contact: ${config.site.contact_email}
 
 Generated: ${new Date().toISOString()}
-Total Articles: ${JSON.parse(fs.readFileSync('./output/assets/data/articles.json', 'utf8')).metadata.total_articles}
+Total Articles: ${indexData.metadata.total_articles}
 `;
 
     archive.append(instructions, { name: 'UPLOAD_INSTRUCTIONS.txt' });
@@ -452,10 +567,50 @@ Total Articles: ${JSON.parse(fs.readFileSync('./output/assets/data/articles.json
 // Get articles list
 app.get('/api/articles', (req, res) => {
   try {
-    const index = JSON.parse(fs.readFileSync('./output/assets/data/articles.json', 'utf8'));
+    const indexPath = path.join(__dirname, 'output', 'assets', 'data', 'articles.json');
+    const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
     res.json(index);
   } catch (error) {
     res.status(500).json({ error: 'Failed to load articles: ' + error.message });
+  }
+});
+
+// Add new topic
+app.post('/api/topics', express.json(), (req, res) => {
+  try {
+    const { id, name } = req.body;
+
+    if (!id || !name) {
+      return res.status(400).json({ success: false, error: 'Topic ID and name are required' });
+    }
+
+    const topicsPath = path.join(__dirname, 'data', 'topics.json');
+    const topicsData = JSON.parse(fs.readFileSync(topicsPath, 'utf8'));
+
+    // Check if topic already exists
+    if (topicsData.topics.find(t => t.id === id)) {
+      return res.status(400).json({ success: false, error: 'Topic already exists' });
+    }
+
+    // Add new topic
+    topicsData.topics.push({
+      id: id,
+      name: name,
+      slug: id
+    });
+
+    // Update metadata
+    topicsData.metadata.updated = new Date().toISOString().split('T')[0];
+
+    // Save
+    fs.writeFileSync(topicsPath, JSON.stringify(topicsData, null, 2));
+
+    // Update in-memory topics
+    topics.topics.push({ id, name, slug: id });
+
+    res.json({ success: true, topic: { id, name, slug: id } });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
   }
 });
 

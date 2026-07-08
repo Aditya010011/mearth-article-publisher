@@ -34,9 +34,22 @@ document.getElementById('uploadForm').addEventListener('submit', async (e) => {
       
       // Show editor section
       document.getElementById('editorSection').classList.remove('hidden');
-      
-      statusDiv.innerHTML = '<div class="text-green-600">✓ Document parsed successfully! Review and edit below.</div>';
-      
+
+      let successMessage = '<div class="text-green-600">✓ Document parsed successfully! Review and edit below.</div>';
+
+      // Show duplicate warning if present
+      if (result.data.duplicateWarning) {
+        const warning = result.data.duplicateWarning;
+        const warningColor = warning.level === 'high' ? 'red' : 'yellow';
+        successMessage += `<div class="mt-3 p-3 bg-${warningColor}-50 border border-${warningColor}-300 rounded text-${warningColor}-800">
+          <strong>Duplicate Detection:</strong><br>
+          ${warning.message}<br>
+          <small>Matched article: <code>${warning.matchedArticle}</code> (${warning.similarity}% similar)</small>
+        </div>`;
+      }
+
+      statusDiv.innerHTML = successMessage;
+
       // Scroll to editor
       document.getElementById('editorSection').scrollIntoView({ behavior: 'smooth' });
       
@@ -139,6 +152,8 @@ document.getElementById('articleForm').addEventListener('submit', async (e) => {
   
   try {
     // Collect form data
+    const secondaryCategory = document.getElementById('secondary_category').value;
+
     const articleData = {
       title: document.getElementById('title').value,
       subtitle: document.getElementById('subtitle').value,
@@ -147,11 +162,13 @@ document.getElementById('articleForm').addEventListener('submit', async (e) => {
       publish_date: document.getElementById('publish_date').value,
       wordCount: parseInt(document.getElementById('wordCount').textContent),
       primary_category: document.getElementById('primary_category').value,
+      secondary_category: secondaryCategory || null,
       pmh_zones: Array.from(document.querySelectorAll('input[name="pmh_zones"]:checked')).map(cb => cb.value),
       mega_challenges: Array.from(document.querySelectorAll('input[name="mega_challenges"]:checked')).map(cb => cb.value),
       topics: Array.from(document.querySelectorAll('input[name="topics"]:checked')).map(cb => cb.value),
       entities: Array.from(document.querySelectorAll('input[name="entities"]:checked')).map(cb => cb.value),
       meta_description: document.getElementById('meta_description').value,
+      contact_info: document.getElementById('contact_info').value || null,
       files: uploadedFiles,
       additional_resources: collectAdditionalResources()
     };
@@ -224,6 +241,48 @@ function exportArticles() {
 
 function viewArticles() {
   window.open('/api/articles', '_blank');
+}
+
+// Add new topic dynamically
+function addNewTopic() {
+  const topicName = prompt('Enter new topic name:');
+  if (!topicName || topicName.trim() === '') return;
+
+  const topicId = topicName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  const topicsGrid = document.getElementById('topicsGrid');
+
+  // Check if topic already exists
+  const existing = Array.from(topicsGrid.querySelectorAll('input[name="topics"]')).find(
+    input => input.value === topicId
+  );
+
+  if (existing) {
+    alert('A topic with this name already exists!');
+    return;
+  }
+
+  // Add new checkbox
+  const label = document.createElement('label');
+  label.className = 'flex items-center space-x-2';
+  label.innerHTML = `
+    <input type="checkbox" name="topics" value="${topicId}" class="rounded" checked>
+    <span class="text-sm">${topicName}</span>
+  `;
+
+  topicsGrid.appendChild(label);
+
+  // Save to server
+  fetch('/api/topics', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: topicId, name: topicName })
+  }).then(res => res.json()).then(data => {
+    if (!data.success) {
+      alert('Failed to save topic: ' + data.error);
+    }
+  }).catch(err => {
+    console.error('Error saving topic:', err);
+  });
 }
 
 function previewArticle() {

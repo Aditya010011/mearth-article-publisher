@@ -4,7 +4,8 @@
     "tagline": "Exploring the Earth-Moon Economic Ecosystem",
     "url": "https://mearth.com",
     "description": "A platform dedicated to understanding and building the interconnected Moon-Earth system through thought leadership, research, and systems thinking.",
-    "contact_email": "info@moonhut.org"
+    "contact_email": "info@moonhut.org",
+    "contact_text": "Have questions about this article? Contact us at info@moonhut.org"
   },
   "paths": {
     "base": "/discover",
